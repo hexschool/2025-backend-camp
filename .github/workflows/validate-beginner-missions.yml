@@ -1,0 +1,104 @@
+name: 初階任務驗證
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  validate-missions:
+    name: 驗證初階任務 7 題
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Task 1 - Check website title
+        run: |
+          echo "📋 題目 1：檢查網站 Title"
+          if grep -q "<title>LiveFit</title>" frontend/index.html; then
+            echo "✅ 通過：Title 已改為 LiveFit"
+          else
+            echo "❌ 失敗：請將 frontend/index.html 中的 <title>LiveFit+</title> 改為 <title>LiveFit</title>"
+            exit 1
+          fi
+
+      - name: Task 2 - Check logo image
+        run: |
+          echo "📋 題目 2：檢查網站 Logo"
+          if grep -q "logo-text-v2.png" frontend/src/layouts/LayoutHeader.vue; then
+            echo "✅ 通過：Logo 已改為 logo-text-v2.png"
+          else
+            echo "❌ 失敗：請將 frontend/src/layouts/LayoutHeader.vue 中的 logo-text.png 改為 logo-text-v2.png"
+            exit 1
+          fi
+
+      - name: Task 3 - Check JWT expiration
+        run: |
+          echo "📋 題目 3：檢查 Token 過期設定"
+          if grep -q "JWT_EXPIRES_DAY=7d" .env.example; then
+            echo "✅ 通過：JWT_EXPIRES_DAY 已改為 7d"
+          else
+            echo "❌ 失敗：請將 .env.example 中的 JWT_EXPIRES_DAY=30d 改為 JWT_EXPIRES_DAY=7d"
+            exit 1
+          fi
+
+      - name: Task 4 - Check Entity comment
+        run: |
+          echo "📋 題目 4：檢查 Entity 欄位說明"
+          if head -10 backend/entities/CreditPackages.js | grep -q "堂數方案資料表"; then
+            echo "✅ 通過：已新增欄位說明註解"
+          else
+            echo "❌ 失敗：請在 backend/entities/CreditPackages.js 檔案最上方新增欄位說明註解"
+            exit 1
+          fi
+
+      - name: Task 5 - Check password length
+        run: |
+          echo "📋 題目 5：檢查密碼長度限制"
+          if grep -q "\.{10,16}" backend/controllers/users.js; then
+            echo "✅ 通過：密碼長度已改為 10-16"
+          else
+            echo "❌ 失敗：請將 backend/controllers/users.js 中的 .{8,16} 改為 .{10,16}"
+            exit 1
+          fi
+
+      - name: Task 6 - Check API total field
+        run: |
+          echo "📋 題目 6：檢查 API 回傳總筆數"
+          if grep -q "total: creditPackage.length" backend/controllers/creditPackage.js; then
+            echo "✅ 通過：已新增 total 欄位"
+          else
+            echo "❌ 失敗：請在 backend/controllers/creditPackage.js 的 getAll 函數中新增 total: creditPackage.length"
+            exit 1
+          fi
+
+      - name: Task 7 - Check healthcheck response
+        run: |
+          echo "📋 題目 7：檢查健康檢查回傳格式"
+          if grep -A5 "app.get('/healthcheck'" backend/app.js | grep -q "res.status(200).json"; then
+            echo "✅ 通過：healthcheck 已改為 JSON 格式"
+          else
+            echo "❌ 失敗：請將 backend/app.js 中的 healthcheck 路由改為回傳 JSON 格式"
+            exit 1
+          fi
+
+      - name: All missions completed
+        run: |
+          echo ""
+          echo "🎉🎉🎉 恭喜！初階任務全部通過！🎉🎉🎉"
+          echo ""
+          echo "╔════════════════════════════════════════════════════╗"
+          echo "║           初階任務驗證結果                          ║"
+          echo "╠════════════════════════════════════════════════════╣"
+          echo "║  題目 1：修改網站 Title              ✅ 通過        ║"
+          echo "║  題目 2：更換網站 Logo               ✅ 通過        ║"
+          echo "║  題目 3：修改 Token 過期設定         ✅ 通過        ║"
+          echo "║  題目 4：新增 Entity 欄位說明        ✅ 通過        ║"
+          echo "║  題目 5：修改密碼長度限制            ✅ 通過        ║"
+          echo "║  題目 6：新增 API 回傳總筆數         ✅ 通過        ║"
+          echo "║  題目 7：修改健康檢查回傳格式        ✅ 通過        ║"
+          echo "╠════════════════════════════════════════════════════╣"
+          echo "║  ✅ 全部 7 題通過！                                 ║"
+          echo "╚════════════════════════════════════════════════════╝"
