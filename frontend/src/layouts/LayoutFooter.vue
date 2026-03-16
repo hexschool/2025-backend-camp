@@ -5,7 +5,7 @@
         class="flex justify-between items-center h-12 border-b border-neutral-300 pt-16 pb-12"
       >
         <router-link to="/" class="flex items-center">
-          <img src="/logo-text.png" alt="LiveFit+" class="h-6 w-auto" />
+          <img src="/logo-text-v2.png" alt="LiveFit+" class="h-6 w-auto" />
           <span class="sr-only">LiveFit+</span>
         </router-link>
 
