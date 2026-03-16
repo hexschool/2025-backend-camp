@@ -1,0 +1,152 @@
+name: Validate Advanced Missions
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  validate-screenshots:
+    name: Validate Advanced Missions Screenshots
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check screenshots folder exists
+        run: |
+          echo "📁 檢查 screenshots 資料夾是否存在"
+          if [ -d "screenshots" ]; then
+            echo "✅ screenshots 資料夾存在"
+          else
+            echo "⚠️ screenshots 資料夾不存在，跳過進階任務驗證"
+            echo "💡 提示：如果您只完成初階任務 (LV1)，可以忽略此檢查"
+            echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
+          fi
+
+      - name: Check screenshot 01 - Register
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 1：檢查註冊成功截圖"
+          if [ -f "screenshots/01-register.png" ] || [ -f "screenshots/01-register.jpg" ] || [ -f "screenshots/01-register.jpeg" ]; then
+            echo "✅ 通過：01-register 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/01-register.png（兩個帳號註冊成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 02 - Add Credit Package
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 2：檢查新增組合包方案截圖"
+          if [ -f "screenshots/02-add-credit-package.png" ] || [ -f "screenshots/02-add-credit-package.jpg" ] || [ -f "screenshots/02-add-credit-package.jpeg" ]; then
+            echo "✅ 通過：02-add-credit-package 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/02-add-credit-package.png（DBeaver 新增組合包方案成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 03 - Add Skill
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 3：檢查新增技能截圖"
+          if [ -f "screenshots/03-add-skill.png" ] || [ -f "screenshots/03-add-skill.jpg" ] || [ -f "screenshots/03-add-skill.jpeg" ]; then
+            echo "✅ 通過：03-add-skill 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/03-add-skill.png（後台新增技能成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 04 - Upgrade Coach
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 4：檢查升級教練截圖"
+          if [ -f "screenshots/04-upgrade-coach.png" ] || [ -f "screenshots/04-upgrade-coach.jpg" ] || [ -f "screenshots/04-upgrade-coach.jpeg" ]; then
+            echo "✅ 通過：04-upgrade-coach 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/04-upgrade-coach.png（教練資格管理升級成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 05 - Create Course
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 5：檢查教練開課截圖"
+          if [ -f "screenshots/05-create-course.png" ] || [ -f "screenshots/05-create-course.jpg" ] || [ -f "screenshots/05-create-course.jpeg" ]; then
+            echo "✅ 通過：05-create-course 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/05-create-course.png（教練開課成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 06 - Buy Credits
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 6：檢查購買堂數截圖"
+          if [ -f "screenshots/06-buy-credits.png" ] || [ -f "screenshots/06-buy-credits.jpg" ] || [ -f "screenshots/06-buy-credits.jpeg" ]; then
+            echo "✅ 通過：06-buy-credits 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/06-buy-credits.png（學員購買堂數成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 07 - Book Course
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 7：檢查預約課程截圖"
+          if [ -f "screenshots/07-book-course.png" ] || [ -f "screenshots/07-book-course.jpg" ] || [ -f "screenshots/07-book-course.jpeg" ]; then
+            echo "✅ 通過：07-book-course 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/07-book-course.png（學員預約課程成功）"
+            exit 1
+          fi
+
+      - name: Check screenshot 08 - Booking Record
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo "📋 截圖 8：檢查預約紀錄截圖"
+          if [ -f "screenshots/08-booking-record.png" ] || [ -f "screenshots/08-booking-record.jpg" ] || [ -f "screenshots/08-booking-record.jpeg" ]; then
+            echo "✅ 通過：08-booking-record 截圖已上傳"
+          else
+            echo "❌ 失敗：請上傳 screenshots/08-booking-record.png（預約紀錄畫面）"
+            exit 1
+          fi
+
+      - name: All advanced missions completed
+        if: env.SKIP_VALIDATION != 'true'
+        run: |
+          echo ""
+          echo "🎉🎉🎉 恭喜！進階任務截圖全部上傳完成！🎉🎉🎉"
+          echo ""
+          echo "╔════════════════════════════════════════════════════════╗"
+          echo "║              進階任務截圖驗證結果                       ║"
+          echo "╠════════════════════════════════════════════════════════╣"
+          echo "║  截圖 1：兩個帳號註冊成功              ✅ 已上傳        ║"
+          echo "║  截圖 2：DBeaver 新增組合包方案成功    ✅ 已上傳        ║"
+          echo "║  截圖 3：後台新增技能成功              ✅ 已上傳        ║"
+          echo "║  截圖 4：教練資格管理升級成功          ✅ 已上傳        ║"
+          echo "║  截圖 5：教練開課成功                  ✅ 已上傳        ║"
+          echo "║  截圖 6：學員購買堂數成功              ✅ 已上傳        ║"
+          echo "║  截圖 7：學員預約課程成功              ✅ 已上傳        ║"
+          echo "║  截圖 8：預約紀錄畫面                  ✅ 已上傳        ║"
+          echo "╠════════════════════════════════════════════════════════╣"
+          echo "║  ✅ 全部 8 張截圖已上傳！                               ║"
+          echo "╚════════════════════════════════════════════════════════╝"
+          echo ""
+          echo "🏆 恭喜完成 LV2 進階任務！"
+
+      - name: Skip message
+        if: env.SKIP_VALIDATION == 'true'
+        run: |
+          echo ""
+          echo "╔════════════════════════════════════════════════════════╗"
+          echo "║              進階任務截圖驗證結果                       ║"
+          echo "╠════════════════════════════════════════════════════════╣"
+          echo "║  ⚠️  未偵測到 screenshots 資料夾                        ║"
+          echo "║                                                        ║"
+          echo "║  如果您只完成 LV1 初階任務，可以忽略此訊息              ║"
+          echo "║  如果您要完成 LV2 進階任務，請：                        ║"
+          echo "║  1. 建立 screenshots 資料夾                            ║"
+          echo "║  2. 上傳 8 張截圖（01-register.png ~ 08-booking-record.png）║"
+          echo "╚════════════════════════════════════════════════════════╝"
